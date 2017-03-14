@@ -11,12 +11,21 @@ public class TankMove : MonoBehaviour {
 
     private float h, v;
 
-	// Use this for initialization
-	void Start () {
+    private PhotonView pv = null;
+    private Transform camPivot;
+
+    void Start () {
         rbody = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 
         rbody.centerOfMass = new Vector3(0f- 0.5f, 0f);
+
+        pv = GetComponent<PhotonView>();
+        camPivot = this.transform;
+
+        if (pv.isMine) {
+            Camera.main.GetComponent<SmoothFollow>().target = camPivot;
+        }
 	}
 	
 	// Update is called once per frame
