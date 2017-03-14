@@ -63,7 +63,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\02.Scripts\Cannon.cs" />
     <Compile Include="Assets\02.Scripts\CannonCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\FireCannon.cs" />
     <Compile Include="Assets\02.Scripts\SmoothFollow.cs" />
     <Compile Include="Assets\02.Scripts\TankMove.cs" />
     <Compile Include="Assets\02.Scripts\TrackAnim.cs" />
