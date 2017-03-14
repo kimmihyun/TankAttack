@@ -18,22 +18,30 @@ public class TankMove : MonoBehaviour {
         rbody = GetComponent<Rigidbody>();
         tr = GetComponent<Transform>();
 
-        rbody.centerOfMass = new Vector3(0f- 0.5f, 0f);
 
         pv = GetComponent<PhotonView>();
         camPivot = this.transform;
 
-        if (pv.isMine) {
+        if (pv.isMine)
+        {
+            rbody.centerOfMass = new Vector3(0f,-0.5f, 0f);
             Camera.main.GetComponent<SmoothFollow>().target = camPivot;
+        }
+        else {
+            rbody.isKinematic = false;
         }
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (!pv.isMine)
+            return;
+
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
         tr.Rotate(Vector3.up * h*rotSpeed * Time.deltaTime);
         tr.Translate(Vector3.forward * v * moveSpeed * Time.deltaTime);
-	}
+    }
 }
