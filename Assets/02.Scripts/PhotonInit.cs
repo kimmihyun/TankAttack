@@ -6,12 +6,15 @@ public class PhotonInit : MonoBehaviour {
     //App버전정보
     public string version = "v1.0";
 
-    public InputField userId;
+    public InputField userId,roomName;
+
+    public GameObject scrollContents, roomItem;
 
     private void Awake()
     {
         //포톤클라우드에 접속
         PhotonNetwork.ConnectUsingSettings(version);
+        roomName.text = "ROOM_" + Random.Range(0, 999).ToString("000");
     }
 
     private void OnGUI()
@@ -56,5 +59,54 @@ public class PhotonInit : MonoBehaviour {
         PlayerPrefs.SetString("USER_ID", userId.text);
 
         PhotonNetwork.JoinRandomRoom();
+    }
+    public void OnClickCreateRoom() {
+        string _roomName = roomName.text;
+
+        if (string.IsNullOrEmpty(roomName.text)) {
+            _roomName = "ROOM_" + Random.Range(0, 999).ToString("000");
+        }
+
+        PhotonNetwork.player.name = userId.text;
+        PlayerPrefs.SetString("USER_ID", userId.text);
+
+        RoomOptions roomOption = new RoomOptions();
+        roomOption.IsOpen = true;
+        roomOption.isVisible = true;
+        roomOption.maxPlayers = 20;
+
+        PhotonNetwork.CreateRoom(_roomName, roomOption, TypedLobby.Default);
+    }
+
+    void OnPhotonCreateRoomFailed(object[] codeAndMsg) {
+        Debug.Log("Create Room Failed = " + codeAndMsg[1]);
+    }
+
+    void OnReceivedRoomListUpdate() {
+
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("ROOM_ITEM")) {
+            Destroy(obj);
+        }
+
+        int rowCount = 0;
+        scrollContents.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
+
+        foreach (RoomInfo _room in PhotonNetwork.GetRoomList())
+        {
+            Debug.Log(_room.name);
+            GameObject room = (GameObject)Instantiate(roomItem);
+
+            room.transform.SetParent(scrollContents.transform, false);
+
+            RoomData roomdata = room.GetComponent<RoomData>();
+            roomdata.roomName = _room.name;
+            roomdata.connectPlayer = _room.playerCount;
+            roomdata.maxPlayers = _room.maxPlayers;
+
+            roomdata.DispRoomData();
+
+            scrollContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
+            scrollContents.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 20);
+        }
     }
 }

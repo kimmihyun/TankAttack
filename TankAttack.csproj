@@ -82,6 +82,7 @@
     <Compile Include="Assets\02.Scripts\FireCannon.cs" />
     <Compile Include="Assets\02.Scripts\GameMgr.cs" />
     <Compile Include="Assets\02.Scripts\PhotonInit.cs" />
+    <Compile Include="Assets\02.Scripts\RoomData.cs" />
     <Compile Include="Assets\02.Scripts\SmoothFollow.cs" />
     <Compile Include="Assets\02.Scripts\TankDamage.cs" />
     <Compile Include="Assets\02.Scripts\TankMove.cs" />
