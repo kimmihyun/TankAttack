@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PhotonInit : MonoBehaviour {
-
     //App버전정보
     public string version = "v1.0";
+
+    public InputField userId;
 
     private void Awake()
     {
@@ -20,7 +22,16 @@ public class PhotonInit : MonoBehaviour {
 
     void OnJoinedLobby() {
         Debug.Log("Entered Lobby !");
-        PhotonNetwork.JoinRandomRoom();
+        //PhotonNetwork.JoinRandomRoom();
+        userId.text = GetUserId();
+    }
+
+    string GetUserId() {
+        string userId = PlayerPrefs.GetString("User_ID");
+        if (string.IsNullOrEmpty(userId)) {
+            userId = "USER_" + Random.Range(0, 999).ToString("000");
+        }
+        return userId;
     }
 
     void OnPhotonRandomJoinFailed() {
@@ -30,11 +41,20 @@ public class PhotonInit : MonoBehaviour {
 
     void OnJoinedRoom() {
         Debug.Log("Enter Room");
-        CreateTank();
+        StartCoroutine(this.LoadBattleField());
     }
 
-    void CreateTank() {
-        float pos = Random.Range(-100.0f, 100.0f);
-        PhotonNetwork.Instantiate("Tank", new Vector3(pos, 20.0f, pos), Quaternion.identity, 0);
+    IEnumerator LoadBattleField() {
+        PhotonNetwork.isMessageQueueRunning = false;
+
+        AsyncOperation ao = Application.LoadLevelAsync("scBattleField");
+        yield return ao;
+    }
+
+    public void OnClickJoinRandomRoom() {
+        PhotonNetwork.player.name = userId.text;
+        PlayerPrefs.SetString("USER_ID", userId.text);
+
+        PhotonNetwork.JoinRandomRoom();
     }
 }

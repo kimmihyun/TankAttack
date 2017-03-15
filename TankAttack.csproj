@@ -75,9 +75,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\02.Scripts\BillboardCanvas.cs" />
     <Compile Include="Assets\02.Scripts\Cannon.cs" />
     <Compile Include="Assets\02.Scripts\CannonCtrl.cs" />
+    <Compile Include="Assets\02.Scripts\DisplayUserId.cs" />
     <Compile Include="Assets\02.Scripts\FireCannon.cs" />
+    <Compile Include="Assets\02.Scripts\GameMgr.cs" />
     <Compile Include="Assets\02.Scripts\PhotonInit.cs" />
     <Compile Include="Assets\02.Scripts\SmoothFollow.cs" />
     <Compile Include="Assets\02.Scripts\TankDamage.cs" />
