@@ -81,6 +81,7 @@
     <Compile Include="Assets\02.Scripts\DisplayUserId.cs" />
     <Compile Include="Assets\02.Scripts\FireCannon.cs" />
     <Compile Include="Assets\02.Scripts\GameMgr.cs" />
+    <Compile Include="Assets\02.Scripts\LoadUserInfo.cs" />
     <Compile Include="Assets\02.Scripts\PhotonInit.cs" />
     <Compile Include="Assets\02.Scripts\RoomData.cs" />
     <Compile Include="Assets\02.Scripts\SmoothFollow.cs" />
