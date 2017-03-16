@@ -9,6 +9,8 @@ public class Cannon : MonoBehaviour {
     private CapsuleCollider _collider;
     private Rigidbody _rigidbody;
 
+    public int playerId = -1;
+
 
     void Start()
     {

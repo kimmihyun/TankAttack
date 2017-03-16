@@ -13,7 +13,8 @@ public class PhotonInit : MonoBehaviour {
     private void Awake()
     {
         //포톤클라우드에 접속
-        PhotonNetwork.ConnectUsingSettings(version);
+        if (!PhotonNetwork.connected) PhotonNetwork.ConnectUsingSettings(version);
+        userId.text = GetUserId();
         roomName.text = "ROOM_" + Random.Range(0, 999).ToString("000");
     }
 
@@ -98,15 +99,24 @@ public class PhotonInit : MonoBehaviour {
 
             room.transform.SetParent(scrollContents.transform, false);
 
-            RoomData roomdata = room.GetComponent<RoomData>();
-            roomdata.roomName = _room.name;
-            roomdata.connectPlayer = _room.playerCount;
-            roomdata.maxPlayers = _room.maxPlayers;
+            RoomData roomData = room.GetComponent<RoomData>();
+            roomData.roomName = _room.name;
+            roomData.connectPlayer = _room.playerCount;
+            roomData.maxPlayers = _room.maxPlayers;
 
-            roomdata.DispRoomData();
-
+            roomData.DispRoomData();
+            roomData.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(delegate { OnClickRoomItem(roomData.roomName); });
+            
             scrollContents.GetComponent<GridLayoutGroup>().constraintCount = ++rowCount;
             scrollContents.GetComponent<RectTransform>().sizeDelta += new Vector2(0, 20);
         }
     }
+
+    void OnClickRoomItem(string roomName) {
+        PhotonNetwork.player.name = userId.text;
+        PlayerPrefs.SetString("USER_ID", userId.text);
+
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
 }

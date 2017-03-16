@@ -24,6 +24,9 @@ public class FireCannon : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject(-1)) return;
+
         if (pv.isMine&&Input.GetMouseButtonDown(0)) {
             Fire();
             pv.RPC("Fire", PhotonTargets.Others, null);
@@ -33,6 +36,8 @@ public class FireCannon : MonoBehaviour {
     [PunRPC]
     void Fire() {
         sfx.PlayOneShot(fireSfx, 1.0f);
-        Instantiate(cannon, firePos.position, firePos.rotation);
+
+        GameObject _cannon = (GameObject)Instantiate(cannon, firePos.position, firePos.rotation);
+        _cannon.GetComponent<Cannon>().playerId = pv.ownerId;
     }
 }
